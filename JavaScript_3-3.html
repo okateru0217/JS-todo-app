@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript_3-3</title>
+</head>
+
+<body>
+  <h1>ToDoリスト</h1>
+
+    <input type="radio" id="radio_all" checked>すべて
+    <input type="radio" id="radio_woking">作業中
+    <input type="radio" id="radio_done">完了
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>コメント</th>
+        <th>状態</th>
+      </tr>
+    </thead>
+    <tbody id="todo_body"></tbody>
+  </table>
+
+  <h2>新規タスクの追加</h2>
+  <input id="input_todo" type="text">
+  <button id="add_btn">追加</button>
+
+  <script src='JavaScript_3-3.js'></script>
+</body>
+
+</html>
