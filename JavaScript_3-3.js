@@ -14,19 +14,18 @@ const tableBody = document.getElementById('todo_body');
 
 // ボタン押下時の処理
 addBtn.addEventListener('click', () =>{
-  const todo = {
-      id: nextId++, 
-      comment: inputComment.value, 
-      status: '作業中',
-    }
-  todos.push(todo);
-  
   // 空文字が入力された時の処理
   if (inputComment.value === '') {
     alert('タスクを入力してください!');
-    todos.pop();
+    return;
   }
 
+  const todo = {
+      id: nextId++, 
+      comment: inputComment.value, 
+      status: '作業中'
+    }
+  todos.push(todo);
   displayTodos(todos);
   // タスク入力後、入力欄を空にする
   inputComment.value = '';
