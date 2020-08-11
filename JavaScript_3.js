@@ -1,6 +1,3 @@
-// ID番号のための変数
-let nextId = 0;
-
 // コメントを格納する配列
 const todos = [];
 
@@ -30,7 +27,7 @@ addBtn.addEventListener('click', () =>{
   // タスク入力後、入力欄を空にする
   inputComment.value = '';
   displayTodos(todos);
-  chengeoverTask()
+  changeoverTask()
 });
 
 // todosを表示させるための関数
@@ -77,7 +74,7 @@ const actionDeleteButton = (id) => {
       todos[i].id = i;
     }
     // displayTodos(todos);
-    chengeoverTask();
+    changeoverTask();
   });
   return deleteButton;
 };
@@ -90,29 +87,39 @@ const actionStatusButton = (todo) => {
         if (todo.status === '作業中') {
             todo.status = '完了';
             statusButton.textContent = todo.status;
-            chengeoverTask();
+            changeoverTask();
         } else if (todo.status === '完了') {
             todo.status = '作業中';
             statusButton.textContent = todo.status;
-            chengeoverTask();
+            changeoverTask();
         }
     });
     return statusButton
 };
 
+const radioButtonAll = document.getElementById('radio_all');
+const radioButtonWorking = document.getElementById('radio_working');
+const radioButtonDone = document.getElementById('radio_done');
+
 // タスク表示/非表示の切り替え機能
-const chengeoverTask = () => {
-  if (radio[0].checked) {
+const changeoverTask = () => {
+  if (radioButtonAll.checked) {
     return displayTodos(todos);
-  }else if (radio[1].checked) {
+  } else if (radioButtonWorking.checked) {
     const workingTodos = todos.filter((todo) => {
       return todo.status === '作業中';
     });
     return displayTodos(workingTodos);
-  } else if (radio[2].checked) {
+  } else if (radioButtonDone.checked) {
     const doneTodos = todos.filter((todo) => {
       return todo.status === '完了';
     });
     return displayTodos(doneTodos);
   }
 }
+
+radio.forEach((e, number) => {
+  radio[number].addEventListener('click', () => {
+    changeoverTask();
+  });
+});
