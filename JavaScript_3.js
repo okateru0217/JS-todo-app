@@ -1,6 +1,3 @@
-// ID番号のための変数
-let nextId = 0;
-
 // コメントを格納する配列
 const todos = [];
 
@@ -11,6 +8,7 @@ const todos = [];
 const inputComment = document.getElementById('input_todo');
 const addBtn = document.getElementById('add_btn');
 const tableBody = document.getElementById('todo_body');
+const radio = document.getElementsByName('radio');
 
 // ボタン押下時の処理
 addBtn.addEventListener('click', () =>{
@@ -19,30 +17,31 @@ addBtn.addEventListener('click', () =>{
     alert('タスクを入力してください!');
     return;
   }
-
+  
   const todo = {
-      id: nextId++, 
+      id: todos.length,
       comment: inputComment.value, 
-      status: '作業中'
+      status: '作業中',
     }
   todos.push(todo);
-  displayTodos(todos);
   // タスク入力後、入力欄を空にする
   inputComment.value = '';
+  displayTodos(todos);
+  changeoverTask()
 });
 
 // todosを表示させるための関数
 const displayTodos = (todos) => {
   tableBody.textContent = '';
   
-  todos.forEach((todo, index) => {
+  todos.forEach((todo) => {
     // trの生成
     const tableRecord = document.createElement('tr');
     tableBody.appendChild(tableRecord);
     
     // IDの生成
     const tableId = document.createElement('th');
-    tableId.textContent = index;
+    tableId.textContent = todo.id;
     tableRecord.appendChild(tableId);
 
     // コメントの生成
@@ -71,12 +70,16 @@ const actionDeleteButton = (id) => {
       return todo.id === id;
     });
     todos.splice(targetIndex, 1);
-    displayTodos(todos);
+    for (let i = targetIndex; i <todos.length; i++) {
+      todos[i].id = i;
+    }
+    // displayTodos(todos);
+    changeoverTask();
   });
   return deleteButton;
 };
 
-//　作業中ボタン押下時の処理
+// 作業中ボタン押下時の処理
 const actionStatusButton = (todo) => {
     const statusButton = document.createElement('button');
     statusButton.textContent = todo.status;
@@ -84,10 +87,39 @@ const actionStatusButton = (todo) => {
         if (todo.status === '作業中') {
             todo.status = '完了';
             statusButton.textContent = todo.status;
+            changeoverTask();
         } else if (todo.status === '完了') {
             todo.status = '作業中';
             statusButton.textContent = todo.status;
+            changeoverTask();
         }
     });
     return statusButton
 };
+
+const radioButtonAll = document.getElementById('radio_all');
+const radioButtonWorking = document.getElementById('radio_working');
+const radioButtonDone = document.getElementById('radio_done');
+
+// タスク表示/非表示の切り替え機能
+const changeoverTask = () => {
+  if (radioButtonAll.checked) {
+    return displayTodos(todos);
+  } else if (radioButtonWorking.checked) {
+    const workingTodos = todos.filter((todo) => {
+      return todo.status === '作業中';
+    });
+    return displayTodos(workingTodos);
+  } else if (radioButtonDone.checked) {
+    const doneTodos = todos.filter((todo) => {
+      return todo.status === '完了';
+    });
+    return displayTodos(doneTodos);
+  }
+}
+
+radio.forEach((e, number) => {
+  radio[number].addEventListener('click', () => {
+    changeoverTask();
+  });
+});
